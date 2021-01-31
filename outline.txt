@@ -1,0 +1,77 @@
+Title Page
+Introduction
+
+Notes and explanations of Bioinformatics seminar:
+
+What are proteins?
+https://www.youtube.com/watch?v=zm-3kovWpNQ
+They are the work horses of our body. The shape of the proteins
+are critical to their function. A nice explanation of how proteins are formed:
+https://www.youtube.com/watch?v=gG7uCskUOrA
+
+
+Binding Residue is the same as Binding-Site.
+We are trying to find a function f: ProteinPrimaryStructure —> ProteinBindingResidues.
+There can be multiple functions mapped for example, 
+g: ProteinPrimaryStructure —> ProteinBindingResidues_Radical.
+g: ProteinPrimaryStructure —> ProteinBindingResidues_Metal.
+However we are only worried about the residue prediction not the type of residue prediction.
+
+
+There is enormous difference between known 3D structures of proteins and known sequencing which makes it difficult to combine them.
+Moreover, using the existing 3D structures ==> pattern matching. Which computationally very expensive.
+
+Data Set:
+Data of 14 ligands.
+Try to understand what augmentation they have done and why.
+
+Method motivation:
+Sliding window find what this is.
+
+There is a co-relation in machine language translation and binding residue prediction:
+1. Like there is a link between different words in a sentence or across sentences, there is link between
+different binding residues(sites) because of the complex 3D structure of the proteins.
+There are 2 differences in these.
+
+Not applicable sorry ***Variable length of amino acid sequence gives us various protiens, so the protein ligand binding sites
+need to be predicted with variable inputs. So only a recurrent neural network can handle 
+a function of variable input length and produce a output of different output length. If we do not use
+recurrent neural network, we would have to train NNs of different input and output cardinality. This
+would impractical and unnecessary.***?
+
+Method outline
+Each residue in the protein sequence is a potential binding residue, hence we must have some
+features engineered for each residue of the protein. Hence after engineering the input features,
+we have 30 features/residue in a protein. That gives us a feature map of L * 30 feature map.
+
+General method
+Take 2000 sequences with corresponding label residues for training.
+Divide the sequences into say 100 sequence batches
+Each batch should be of same length. If the sequences in the batch are differing in length pad them
+Across batches the length of the sequences can be different.
+We create an input volume to our convolution neural network - (30 * batch length * batch size) i.e input feature map
+
+Effective input field
+1D convolution
+And there is considerable overlap hence the input field does not grow exponentially
+
+The Basic block
+After producing m*1*2c output channel in the initial convolution,
+We apply the following transformation to get R^{m*1*c} volume
+It produces 2c channels in each step because after the creation of an output of
+each step we have to do a gated transform
+a * sigmoid(b) which returns the input channels to c.
+After getting R^{m*1*c} output channels we apply for 2c kernels of volume R^{m*1*c}
+to get an output volume of R^{m*1*2c} which again in the input of to the next basic block.
+Like this there are N basic blocks.
+What is interesting to note is that at each step, each residue is represented by a volume of R^{1*1*2c} features at a given abstract level of represtation. Hence when we apply a kernel, it is important
+that the whole feature volume of every residue considered by the kernel is taken into account.
+Only then can we successfully build higher abstractions based on extracted features at a lower abstraction.
+
+
+The decoder network:
+First a 1*1*2c kernel is employed to get c output channels
+Again 1*1*c kernels is employed to get 2 outputs (for each residue)
+Afterwards a softmax is applied weather it is positive or negative. A 2 way softmax the predicts the probability of each residue being a positive or negative sample.
+
+Check about the learning strategies in the software package.
