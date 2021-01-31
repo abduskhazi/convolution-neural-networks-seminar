@@ -48,3 +48,12 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Latex files
+presentation.aux
+presentation.nav
+presentation.out
+presentation.pdf
+presentation.snm
+presentation.synctex.gz
+presentation.tex.bak
+presentation.toc
