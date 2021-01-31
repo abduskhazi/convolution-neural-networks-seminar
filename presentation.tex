@@ -1,7 +1,8 @@
 \documentclass{beamer}
 \usetheme{Warsaw}
+\graphicspath{ {./images/} }
 
-\title[Binding Residue Prediction using CNN]{Protein-Ligand Binding Residue Prediction using CNN}
+\title[Binding Residue Prediction]{Protein-Ligand Binding Residue Prediction using CNN}
 \author{
                 Abdus Salam Khazi\\
                 \href{mailto:abdus.khazi@students.uni-freiburg.de}
@@ -11,14 +12,76 @@
 \date{\today}
 \logo{\includegraphics[width=.2\textwidth]{Logo}}
 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
 \begin{document}
 
 \begin{frame}
 \titlepage
 \end{frame}
 
-\begin{frame}
-Hello
+\begin{frame}[t]{Biological Background}
+What are protein? \pause
+\begin{itemize}
+\item They are complex molecules that are work horses of a living organism.
+They are literally machines.
+\href{https://www.youtube.com/watch?v=zm-3kovWpNQ}{TEDx Talk}
+\pause
+
+\item Proteins are essential for almost every function of a living organism body.
+E.g: Movement of muscles, Transportation of oxygen, Digestion, Immune system etc.
+\pause
+
+\item Below are 2 proteins - Hemoglobin(Left) and Motor Protiens(Right).
+
+\includegraphics[scale=0.25]{Hemoglobin}
+\includegraphics[scale=0.25]{MotorProtein}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[t]{Biological Background}
+Protein formation process.
+\href{https://www.youtube.com/watch?v=gG7uCskUOrA}{DNA to Protein}
+\pause
+\begin{itemize}
+\item All Proteins required by an organism are encodied in the DNA.
+\pause
+\item First, RNA polymerase transcribes the part of our DNA which contains protein encoding to messenger RNA a.k.a mRNA.
+\pause
+\item  mRNA is post processed to get an RNA. This RNA goes outside the nucleas of a cell. RNA $\in \{A, T, C, G\}^n$ where $n \in \mathbb{I}^+$
+\pause
+\item  Ribosomes in the cell cytoplasm then translate RNA to an amino acide sequence. This sequence is called primary structure of a protein. The mapping can be written as - $Ribosome:\mathbb \{A, T, C, G\}^n \to \{R, N,D, C ...\}^m$
+where $ m \approx \frac{n}{3}$. 
+\pause
+\item This amino acid sequence folds into a 3D shape depending on its sequence. This structure is called tertiary protien structure.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Biological Background}
+What are Ligands?
+\pause
+\begin{itemize}
+\item They are molecules that bind to particular proteins, called receptor proteins.
+They act as signals to a binding protein, which may intern start a cascading effect.
+\item Example - Glucagon is a ligand created by pancreas. This binds to Glucagon receptor protein which signals it to control the blood sugar level.
+\end{itemize}
+
+\pause
+Why study protein Ligand Interaction?
+\pause
+
+\begin{itemize}
+\item It will help us understand biological processes better
+\item In the above example we can develop better treatment for type-2 diabetes by understanding the working of Glucaogon and its receptor protein.
+\end{itemize}
+
 \end{frame}
 
 \end{document}
