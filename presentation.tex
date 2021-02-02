@@ -7,7 +7,7 @@
                 Abdus Salam Khazi\\
                 \href{mailto:abdus.khazi@students.uni-freiburg.de}
                         {abdus.khazi@students.uni-freiburg.de}
-            }
+}
 \institute{Albert-Ludwigs-Universität Freiburg}
 \date{\today}
 \logo{\includegraphics[width=.2\textwidth]{Logo}}
@@ -103,7 +103,15 @@ They use CNNs.
 \pause
 \item Previous attempts to solve this problem -
 SVM, Deep Neural networks, Basian classifier, Template matching (albeit high computational costs).
+\item Previously methods used sliding window concept to capture residue dependencies.
 \pause
+\item But, nearby residues in tertiary structure may be far residues in primary structures.
+\item Just increasing window size is infeasible memory and computation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{What is our problem? - Continued}
+\begin{itemize}
 \item The authors use CNNs (named DeepCSeqSite) as a universal function approximator.
 \pause
 \item The authors do not solve ligand specific prediction tasks.
@@ -117,10 +125,10 @@ SVM, Deep Neural networks, Basian classifier, Template matching (albeit high com
 $g:\mathbb {\alpha}^n \to {\beta}^m$ where $\alpha,\beta$ are alphabets of 2 distinct languages and $n,m \in \mathbb{I}^+$
 \pause
 \item Binding-Site prediction is a specific case of NMT, where $m = n$, $\alpha$ is one of  20 amino acids and $\beta$ is $\{Binding, NonBinding\}$.
+\pause 
+\item The local and long distance coorelation between different ${\alpha}^n$ and ${\beta}^m$ exist in both NMT and BR prediction.
 \pause
 \item Hence, any solution of NMT can be used for our problem.
-\pause
-\item One of the solutions of NMT is recurrent neural networks.
 \pause
 \item Fun fact - Ribosome is also "Translating" from DNA alphabet to Amino acid alphabet !!!
 \end{itemize}
@@ -150,6 +158,58 @@ Solution - Convolution Neural Networks.
 \end{frame}
 
 \begin{frame}[t]{CNNs as a solution}
+\begin{itemize}
+\item Let $\alpha \in $ \{Ala, Arg, Asn ...\}. i.e Set of amino acids.
+\pause
+\item A protein of length $m$ is represented as ${\alpha}^m$
+\pause
+\item Training is done as a classifier that classifies ${\alpha}^m$ to $\{Binding, NonBinding\}^m$.
+\pause
+\item During training, a set of $B$ proteins is taken together.  Each protein ${\alpha}^m$ padded with $p$ dummy residues given by
+$$
+p =  \max_{1 \leq i \leq B} (m_i)- m
+$$
+to make the lengths of proteins in a single batch same.
+\pause
+\item The padding is removed before Loss function calculation.
+\pause
+\item The lengths of the protein batches can differ.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{CNNs as a solution}
+\begin{itemize}
+\item Each $\alpha$ in a protein is mapped to $\mathbb{R}^{30}$. Thus a protein is mapped to a feature space $\mathbb{R}^{m \times 30}$
+\pause
+\item $\mathbb{R}^{30}$ are manually engineered features given by
+\begin{itemize}
+\item Position-Specific Score Matrix (PSSM) $\in \mathbb{R}^{20}$. This is the probilility of mutation to other amino acids. Since this  mutation is not independent,  this is calculated for the whole protein i.e $\in \mathbb{R}^{m \times 20}$.  Normalized values are calculated by
+$$
+y = \frac{1}{1+2^{-x}}
+$$
+\pause
+\item Relative solvent accessibility $\in \mathbb{R}$
+\pause
+\item Secondary Structure i.e \{alpha-helix, beta-strand, coil\} $\in \mathbb{R}^3$
+\pause
+\item Dihedral angle $\in \mathbb{R}^2$
+\pause
+\item Residue type $\in \mathbb{R}$. Given by
+$r = \frac{type}{21}; type \in [0,20], \mathbb{I}+$.\\
+Here $0$ means dummy residue, $[1-20]$ represents\\ other residues.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{CNNs as a solution}
+\begin{itemize}
+\item $\mathbb{R}^{30}$ Continued...
+\begin{itemize}
+\item Conservation scores $\in \mathbb{R}^2$
+\pause
+\item Position embeddings $\in \mathbb{R}$. Given by $PE_i = \frac{i}{m}$ for $i^{th}$ residue.
+\end{itemize}
+\end{itemize}
 \end{frame}
 
 \end{document}
