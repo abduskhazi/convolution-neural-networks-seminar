@@ -64,6 +64,11 @@ where $ m \approx \frac{n}{3}$.
 \end{itemize}
 \end{frame}
 
+
+
+
+
+
 \begin{frame}[t]{Biological Background}
 What are Ligands?
 \pause
@@ -79,9 +84,72 @@ Why study protein Ligand Interaction?
 
 \begin{itemize}
 \item It will help us understand biological processes better
-\item In the above example we can develop better treatment for type-2 diabetes by understanding the working of Glucaogon and its receptor protein.
+\item In the above example we can develop better treatment for type-2 diabetes by understanding the working of Glucogon and its receptor protein.
 \end{itemize}
+\end{frame}
 
+
+\begin{frame}[t]{What is our problem?}
+\pause
+\begin{itemize}
+\item In this paper the authors are trying to estimate the function
+$f:\mathbb \{R, N,D, C ...\}^m \to \{Binding, NonBinding\}^m$
+where $m$ is the length of any ligand binding protein.
+They use CNNs.
+\pause
+\item This function is learnable because the binding sites are directly influenced by the tertiary protein structure which in turn depends on its primary structure.
+\pause
+\item Notice that $m$ is variable here!!!
+\pause
+\item Previous attempts to solve this problem -
+SVM, Deep Neural networks, Basian classifier, Template matching (albeit high computational costs).
+\pause
+\item The authors use CNNs (named DeepCSeqSite) as a universal function approximator.
+\pause
+\item The authors do not solve ligand specific prediction tasks.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Binding-Residue Prediction vs NMT}
+\pause
+\begin{itemize}
+\item Neural Machine Translation (NMT) can be defined as a function
+$g:\mathbb {\alpha}^n \to {\beta}^m$ where $\alpha,\beta$ are alphabets of 2 distinct languages and $n,m \in \mathbb{I}^+$
+\pause
+\item Binding-Site prediction is a specific case of NMT, where $m = n$, $\alpha$ is one of  20 amino acids and $\beta$ is $\{Binding, NonBinding\}$.
+\pause
+\item Hence, any solution of NMT can be used for our problem.
+\pause
+\item One of the solutions of NMT is recurrent neural networks.
+\pause
+\item Fun fact - Ribosome is also "Translating" from DNA alphabet to Amino acid alphabet !!!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{RNNs as a solution}
+\pause
+\begin{itemize}
+\item As our amino acid sequence is variable in length, we could use RNNs to capture long term dependencies in the sequence.
+\pause
+\item There are some disadvantages
+\begin{itemize}
+\pause
+\item The first amino acid is processed $n$ times, where n is the length of the protein. And last amino acid processed only 1 time.
+\pause
+\item RNNs are sequenctial in principle. Parallelizing the computation is not possible.
+\end{itemize}
+\end{itemize}
+\pause
+Solution - Convolution Neural Networks.
+\begin{itemize}
+\pause
+\item T-CNNs can be parallelized, are 10x faster and give state of the art results.
+\pause
+\item In T-CNNs (DeepCSeqSite) architecture, both local and global dependencies can be captured by increassing the number of CNN layers. More on this in later slides!!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{CNNs as a solution}
 \end{frame}
 
 \end{document}
