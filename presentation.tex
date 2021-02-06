@@ -26,18 +26,19 @@
 \end{frame}
 
 \begin{frame}[t]{Biological Background}
-What are protein? \pause
+What are proteins? \pause
 \begin{itemize}
-\item They are complex molecules that are work horses of a living organism.
+\item They are complex molecules that are work-horses of a living organism.
 They are literally machines.
 \href{https://www.youtube.com/watch?v=zm-3kovWpNQ}{TEDx Talk}
 \pause
 
-\item Proteins are essential for almost every function of a living organism body.
-E.g: Movement of muscles, Transportation of oxygen, Digestion, Immune system etc.
+\item Proteins are essential for almost every function of a living organism's body.
+E.g: Movement of muscles, Transportation of oxygen, Digestion, Immune system etc...
 \pause
 
-\item Below are 2 proteins - Hemoglobin(Left) and Motor Protiens(Right).
+\item Below are 2 proteins - Hemoglobin(Left) and Motor Proteins(Right).
+Notice shapes are different.
 
 \includegraphics[scale=0.25]{Hemoglobin}
 \includegraphics[scale=0.25]{MotorProtein}
@@ -51,16 +52,16 @@ Protein formation process.
 \href{https://www.youtube.com/watch?v=gG7uCskUOrA}{DNA to Protein}
 \pause
 \begin{itemize}
-\item All Proteins required by an organism are encodied in the DNA.
+\item All proteins required by an organism are encodied in the DNA.
 \pause
 \item First, RNA polymerase transcribes the part of our DNA which contains protein encoding to messenger RNA a.k.a mRNA.
 \pause
-\item  mRNA is post processed to get an RNA. This RNA goes outside the nucleas of a cell. RNA $\in \{A, T, C, G\}^n$ where $n \in \mathbb{I}^+$
+\item  mRNA is post-processed to get an RNA. This RNA goes outside the nucleus of the cell. RNA $\in \{A, T, C, G\}^n$ where $n \in \mathbb{I}^+$
 \pause
 \item  Ribosomes in the cell cytoplasm then translate RNA to an amino acide sequence. This sequence is called primary structure of a protein. The mapping can be written as - $Ribosome:\mathbb \{A, T, C, G\}^n \to \{R, N,D, C ...\}^m$
 where $ m \approx \frac{n}{3}$. 
 \pause
-\item This amino acid sequence folds into a 3D shape depending on its sequence. This structure is called tertiary protien structure.
+\item This amino acid sequence folds into a 3D shape depending on its sequence. This structure is called tertiary protein structure.
 \end{itemize}
 \end{frame}
 
@@ -74,8 +75,8 @@ What are Ligands?
 \pause
 \begin{itemize}
 \item They are molecules that bind to particular proteins, called receptor proteins.
-They act as signals to a binding protein, which may intern start a cascading effect.
-\item Example - Glucagon is a ligand created by pancreas. This binds to Glucagon receptor protein which signals it to control the blood sugar level.
+They act as signals to the binding protein, which may then start a cascading effect.
+\item Example - Glucogon is a ligand created by pancreas. This binds to Glucagon receptor protein which signals it to control the blood sugar level.
 \end{itemize}
 
 \pause
@@ -83,7 +84,7 @@ Why study protein Ligand Interaction?
 \pause
 
 \begin{itemize}
-\item It will help us understand biological processes better
+\item It will help us understand biological processes better.
 \item In the above example we can develop better treatment for type-2 diabetes by understanding the working of Glucogon and its receptor protein.
 \end{itemize}
 \end{frame}
@@ -102,11 +103,12 @@ They use CNNs.
 \item Notice that $m$ is variable here!!!
 \pause
 \item Previous attempts to solve this problem -
-SVM, Deep Neural networks, Basian classifier, Template matching (albeit high computational costs).
-\item Previously methods used sliding window concept to capture residue dependencies.
+SVM, Deep Neural networks, Bayes classifier, Template matching (albeit with high computational costs).
+\pause
+\item Previous methods used sliding window concept to capture residue dependencies.
 \pause
 \item But, nearby residues in tertiary structure may be far residues in primary structures.
-\item Just increasing window size is infeasible memory and computation.
+\item Just increasing window size is infeasible due to memory and computation costs.
 \end{itemize}
 \end{frame}
 
@@ -115,6 +117,8 @@ SVM, Deep Neural networks, Basian classifier, Template matching (albeit high com
 \item The authors use CNNs (named DeepCSeqSite) as a universal function approximator.
 \pause
 \item The authors do not solve ligand specific prediction tasks.
+\pause
+\item They classify each amino-acid in the sequence as binding or non-binding.
 \end{itemize}
 \end{frame}
 
@@ -142,18 +146,18 @@ $g:\mathbb {\alpha}^n \to {\beta}^m$ where $\alpha,\beta$ are alphabets of 2 dis
 \item There are some disadvantages
 \begin{itemize}
 \pause
-\item The first amino acid is processed $n$ times, where n is the length of the protein. And last amino acid processed only 1 time.
+\item The first amino acid is processed $n$ times, where n is the length of the protein. And the last amino acid is processed only 1 time.
 \pause
-\item RNNs are sequenctial in principle. Parallelizing the computation is not possible.
+\item RNNs are sequential in principle. Parallelizing the computation is not possible.
 \end{itemize}
 \end{itemize}
 \pause
 Solution - Convolution Neural Networks.
 \begin{itemize}
 \pause
-\item T-CNNs can be parallelized, are 10x faster and give state of the art results.
+\item Temporal-CNNs can be parallelized, are 10x faster and give state of the art results.
 \pause
-\item In T-CNNs (DeepCSeqSite) architecture, both local and global dependencies can be captured by increassing the number of CNN layers. More on this in later slides!!
+\item In Temporal-CNNs (DeepCSeqSite) architecture, both local and global dependencies can be captured by increasing the number of CNN layers. More on this in later slides!!
 \end{itemize}
 \end{frame}
 
@@ -165,51 +169,212 @@ Solution - Convolution Neural Networks.
 \pause
 \item Training is done as a classifier that classifies ${\alpha}^m$ to $\{Binding, NonBinding\}^m$.
 \pause
-\item During training, a set of $B$ proteins is taken together.  Each protein ${\alpha}^m$ padded with $p$ dummy residues given by
+\item During training, a set of $B$ proteins is taken together.  Each protein ${\alpha}^m$ in the batch is padded with $p$ dummy residues given by
 $$
 p =  \max_{1 \leq i \leq B} (m_i)- m
 $$
-to make the lengths of proteins in a single batch same.
+to make the lengths of proteins in a single batch equal.
 \pause
-\item The padding is removed before Loss function calculation.
+\item The padding is removed before Loss calculation.
 \pause
-\item The lengths of the protein batches can differ.
+\item The lengths of the batches can differ from each other.
 \end{itemize}
 \end{frame}
 
 \begin{frame}[t]{CNNs as a solution}
 \begin{itemize}
-\item Each $\alpha$ in a protein is mapped to $\mathbb{R}^{30}$. Thus a protein is mapped to a feature space $\mathbb{R}^{m \times 30}$
+\item Each amino-acid in a protein is mapped to $\mathbb{R}^{30}$. Thus a protein is mapped to a feature space $\mathbb{R}^{m \times 30}$
 \pause
 \item $\mathbb{R}^{30}$ are manually engineered features given by
 \begin{itemize}
-\item Position-Specific Score Matrix (PSSM) $\in \mathbb{R}^{20}$. This is the probilility of mutation to other amino acids. Since this  mutation is not independent,  this is calculated for the whole protein i.e $\in \mathbb{R}^{m \times 20}$.  Normalized values are calculated by
+\item Position-Specific Score Matrix (PSSM) $\in \mathbb{R}^{20}$. This is the probilility of mutation to other amino acids in each position.
+Since this  mutation is not position independent,  it is calculated for the whole protein i.e $\in \mathbb{R}^{m \times 20}$.  Normalized values are calculated by
 $$
-y = \frac{1}{1+2^{-x}}
+Norm(\mathbf{x}) = \frac{1}{1+2^{-\mathbf{x}}}; \mathbf{x}, \in \mathbb{R}^{m \times 20}
 $$
 \pause
-\item Relative solvent accessibility $\in \mathbb{R}$
+\item Relative solvent accessibility $\in \mathbb{R}$.
+Buried $(< 0.25)$ or exposed $(> 0.25)$ in the tertiary-structure.
 \pause
-\item Secondary Structure i.e \{alpha-helix, beta-strand, coil\} $\in \mathbb{R}^3$
+\item Secondary Structure i.e \{$\alpha$-helix,$\beta$-strand, coil\} $\in \mathbb{R}^3$.\\
+$\alpha$-helix,$\beta$-strand, coil $\in [0,1]$ indicating probabilities of \\
+existence.
 \pause
-\item Dihedral angle $\in \mathbb{R}^2$
+\item Dihedral angle $ \mathbf{a} \in \mathbb{R}^2$ where $Norm(\mathbf{a}) = \frac{\mathbf{a}}{360}$.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{CNNs as a solution}
+\begin{itemize}
+\item Conservation rating during evolution.  (Relative-entropy, Jensen-Shannon divergence)$\in \mathbb{R}^2$. 
 \pause
 \item Residue type $\in \mathbb{R}$. Given by
 $r = \frac{type}{21}; type \in [0,20], \mathbb{I}+$.\\
 Here $0$ means dummy residue, $[1-20]$ represents\\ other residues.
-\end{itemize}
+\pause
+\item Position embeddings $\in \mathbb{R}$. Given by $PE_i = \frac{i}{L}$ for $i^{th}$ residue where $L$ is the length of the protein.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{CNNs as a solution}
-\begin{itemize}
-\item $\mathbb{R}^{30}$ Continued...
-\begin{itemize}
-\item Conservation scores $\in \mathbb{R}^2$
+\begin{frame}[t]{CNNs as a solution - Architecture}
+\textbf{Effective Context Scope / Input Field}
+
+\includegraphics[scale=0.35]{kernel}
+\includegraphics[scale=0.25]{EmptyNeuralNetwork}\\
+Consider the above kernel with width $3$ (left) and a neural network (right). 
 \pause
-\item Position embeddings $\in \mathbb{R}$. Given by $PE_i = \frac{i}{m}$ for $i^{th}$ residue.
-\end{itemize}
+Let $\mathbf{I}$, $\mathbf{H}$ and $\mathbf{O}$ denote the input, hidden and output vectors respectively. 
+Let $\mathbf{I}_i$, denote a single node in the vector.\\
+Here $\mathbf{I}_0$ is the top element in the vector and in the image.
+\end{frame}
+
+\begin{frame}[t]{CNNs as a solution - Architecture}
+\textbf{Effective Context Scope / Input Field}
+When we apply Kernel to both $\mathbf{I}$ and $\mathbf{H}$ with stride 1,\\
+\pause
+$Context(\mathbf{O}_0) = \{H_0, H_1, H_2\}$\\
+$Input Field(\mathbf{H}_0) = \{I_0, I_1, I_2\}$\\
+$Input Field(\mathbf{H}_1) = \{I_1, I_2, I_3\}$\\
+$Input Field(\mathbf{H}_2) = \{I_2, I_3, I_4\}$\\
+$Input Field(\mathbf{O}_0) = Input Field(\mathbf{H}_0) \cup Input Field(\mathbf{H}_0) \cup Input Field(\mathbf{H}_0)$\\
+$Input Field(\mathbf{O}_0) = \{I_0, I_1, I_2, I_3, I_4\}$\\
+$|Input Field(\mathbf{O}_0)| = 5 = 1 + 2(3 -1) = 1 + n(k-1)$
+
+\pause
+\begin{itemize}
+\item Hence a single convolutional node in $n^{th}$ convolutional layer (depth) with kernel width $k$ has an input field $1+ n(k-1)$. 
+\pause
+\item The author's propose, increase in $n$ i.e the depth of CNN instead of $k$ to prevent huge growth in optimization parameters.
 \end{itemize}
 \end{frame}
+
+\begin{frame}[t]{Basic Design - Standard DeepCSeq-Site}
+Here we consider batch size $B = 1$ for simplicity.
+Preprocessed protein $\textbf{P} \in \mathbb{R}^{m \times d}$ is input to the DeepCSeq network.
+Here $d = 30$ and where $m$ is the length of the protein in the batch.
+\begin{itemize}
+\pause
+\item Let Kernel $\mathbf{K} \in \mathbb{R}^{k \times d}$ be the 1-D kernel in our convolutions.
+\pause
+\item $\mathbf{0}^{\frac{k}{2} \times d}$ is padded at both ends of \textbf{P} to maintain $m$. This padding is also done at each step throughout the network for the same reason.
+\pause
+\item To capture local co-relation and covalent bonds between adjecent residues,
+the following convolution is applied,
+$$
+\mathbf{K}_1(\textbf{P}), \mathbf{K}_2(\textbf{P}), \mathbf{K}_3(\textbf{P}) ... \mathbf{K}_{2c}(\textbf{P})  
+\to \mathbb{R}^{m \times 1 \times 2c}
+$$
+\pause
+\item $\mathbb{R}^{m \times 1 \times 2c}$ is input to $N$ Basic blocks which form the encoder of the network.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Basic Block - DeepCSeq-Site}
+A basic blockblock in the network is defined as
+$$
+Block : \mathbb{R}^{m \times 1 \times 2c} \to \mathbb{R}^{m \times 1 \times 2c}
+$$
+\pause
+A series of $N$ blocks are applied in the following form
+$$
+Block_N(Block_{N-1}.... Block_2(Block_1(x)))); x \in \mathbb{R}^{m \times 1 \times 2c}
+$$
+\pause
+The following diagram shows the basic functioning of basic block
+\end{frame}
+
+\begin{frame}[t]{Basic Block - DeepCSeq-Site}
+\begin{itemize}
+\item  First input $\mathbf{X} \in \mathbb{R}^{m \times 1 \times 2c}$ is layer normalized
+to $\mathbf{X}_{norm}$
+$$
+\mathbf{X}_i = \frac{\mathbf{X}_i - mean(\mathbf{X}_i)}{StdDeviation(\mathbf{X}_i)};  \forall \mathbf{X}_i \in  \mathbb{R}^{m \times 1}; i \in [1,2c], \mathbb{I}^+
+$$
+\pause
+\item Next, $\mathbf{X}_{norm} = [\mathbf{A}: \mathbf{B}]$ where 
+$\mathbf{A},\mathbf{B} \in \mathbb{R}^{m \times 1 \times c}$ is given to Gated Linear
+Unit which performs the following operation to get $\mathbf{X}_{gated}$
+$$
+GLU: \mathbb{R}^{m \times 1 \times 2c} \to \mathbb{R}^{m \times 1 \times c}
+$$
+$$
+GLU([\mathbf{A}: \mathbf{B}]) = \mathbf{A} \odot sigmoid(\mathbf{B})
+$$
+\pause
+\item $\mathbf{K} \in \mathbb{R}^{k \times 1 \times c}$ 1-D kernels are applied to get $\mathbf{X}_{output}$\\
+$
+[\mathbf{K}_1(\mathbf{X}_{gated}):...:\mathbf{K}_{2c}(\mathbf{X}_{gated})] = X_{output}
+$\\
+$X_{output} \in \mathbb{R}^{m \times 1 \times 2c}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Basic Block - DeepCSeq-Site}
+Solutions for gradient issues
+\begin{itemize}
+\item There is skip connection from the input of the block to the output.
+This solves the vanishing gradient issue. The block function can be defined as
+$$
+Block(\mathbf{X}) = \mathbf{X} + Convolution( GLU( Normalization(\mathbf{X}) ) )
+$$
+\pause
+\item Normalization prevents unexpected gradient due to skip connection summation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Decoder - Standard DeepCSeq-Site}
+2 Fully connected (convolution) layers are defined for the decoder in the following way 
+\begin{itemize}
+\item \textbf{Layer 1} - $\mathbf{K}^{1 \times 1 \times 2c}$ kernels are applied to get the first convolution output $\mathbf{X}_{hidden} \in \mathbb{R}^{m \times 1 \times c}$.
+$$
+[\mathbf{K}_1(\mathbf{X}): \mathbf{K}_2(\mathbf{X}) : ....  \mathbf{K}_c(\mathbf{X})] = 
+\mathbf{X}_{hidden};
+\mathbf{X} \in \mathbb{R}^{m \times 1 \times 2c};
+$$
+Here drop-out regularization is used.
+\pause
+\item \textbf{Layer 2} - $\mathbf{K}^{1 \times 1 \times c}$ kernels are applied to get the final prediction $\mathbf{Y}$.
+$$
+[\mathbf{K}_1(\mathbf{X}_{hidden}):
+\mathbf{K}_2(\mathbf{X}_{hidden})] = \mathbf{Y};
+\mathbf{Y} \in \mathbb{R}^{m \times 1 \times 2};
+$$
+$\mathbf{Y}$ is passed through soft-max layer to get the values\\
+in range $[0,1]$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Loss function - Standard DeepCSeq-Site}
+The loss function used is the negative cross entropy (for 2-way softmax classifier) defined for a single amino-acid $i$ in the sequence as 
+$$
+J_i(\theta) = - \mathbf{Y}_i \cdot log(\hat{\mathbf{Y}}_i);
+\mathbf{Y}_i , \hat{\mathbf{Y}}_i \in \mathbb{R}^2
+$$
+$$
+y_i \in \{0,1\};
+\hat{y_i} \in [0,1];
+$$
+The final loss function for a protein-ligand prediction is given by
+$$
+J(\theta) = \sum_{i}^{m} J_i(\theta) + \gamma * L2Norm(\theta)
+$$
+\end{frame}
+
+\begin{frame}[t]{Decoder - Enhanced DeepCSeq-Site}
+The probability of being a binding amino acid depends on wether its neighbours are binding or not. So to facilitiate this,  the following enhanced decoder is proposed by the authors:
+\pause
+\begin{itemize}
+\item Additional "Context prediction" as input to decoder.
+\pause
+\item x
+\pause
+\item During training, we can directly use labels as input.
+\pause
+\item During testing,/future use, first the standard decoder is used for prediction.
+The output of the standard decoder is given as the input to the enhanced decoder.
+\end{itemize}
+\end{frame}
+
 
 \end{document}
