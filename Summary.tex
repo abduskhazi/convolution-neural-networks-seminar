@@ -61,19 +61,19 @@ the residues with limited window size because the spacial proximity of the resid
 The best of tertiary structure strategies are based on the use of 3D template matching which is computationally very costly.
 
 As there are considerable similarities between Neural Machine Translation (NMT) and Binding Residue Prediction, the authors base their solution on NMT solutions.
-Recurrent Neural networks, though widely used for NMT, have disadvantages like being sequencial and unequal residue computations (values from the first residue are in the recurring loop longer than the last residue).
+Recurrent Neural networks, though widely used for NMT, have disadvantages like being sequencial and unequal residue computations (values from the first residue are used in the recurring loop longer than the last residue).
 Due to these issues,  the authors propose the usage of Temporal Convolution Networks
 as a solution.
 
-The T-CNN architecture proposed by the authors (named DeepCSeq) comprises of an encoder and a decoder part similar to the architecture of any sequence to sequence prediction model. 
+The T-CNN architecture proposed by the authors (named DeepCSeq) comprises of an encoder and a decoder similar to the architecture of any sequence to sequence prediction model. 
 Each amino acid in the sequence is mapped to a high dimensional real valued vector 
 which holds information about the amino acid e.g. type, spacial location within the sequence etc...
 The feature map for the whole protein is passed through multiple 1 dimensional convolutions in 1 layer. 
 In addition to this, the layer has layer normalisation and gated linear unit
 processing to stabilize the gradients.
 The number of layers in the encoder is configurable. The outputs of each layer maintain
-a feature vector for each amino acid using padding.
-The decoder network consists of 2 fully connected convolution layers with 1 dimensional
+a feature vector for each amino acid.
+The decoder network consists of 2 fully connected convolution layers with 1-Dimensional
 1 * 1 kernels. The final output of the prediction is a 2 dimensional vector for each
 amino acid. This is passed through a softmax layer and thereafter to binary cross entropy
 for loss calculation.
@@ -85,13 +85,13 @@ standard encoder and the resulting sum is given to the standard decoder again.
 The second output of the standard decoder becomes the final output of the enhanced
 architecture.
 
-The authors do hyper-parameter optimisation separately to get number of encoder layers as 10, kernel width as 5 among other values.
+The authors do hyper-parameter optimisation separately for each hyper-parameter to get the number of layers in encoder as 10 and the kernel width as 5 among other values.
 Due to very steep and unpredictable gradients, the authors use a 3 stage stochastic 
 gradient descent. Each stage has a different learning rate and the rate decays exponentially within the stage.
 
 It is found that the proposed architecture is at least 15\% better in precision and better in Matthews Correlation Coefficient (MCC) by a value of $\approx$ 0.05 compared to the state of the art performance till date.
 In addition the enhanced decoder increases the MCC by an additional value of 0.02.
-However the recall was found to be lesser due to the negative skew in data. 
+However the recall was found to be lesser due to the negative skew in the training data. 
 Moreover,  some factors did not help in improving accuracy in the project like data-augmentation.
 Finally the authors discuss further research areas for this topic namely the usage of generative adversarial networks, inclusion of more 3D features in the input feature map and the usage of attention mechanisms to better model long distance protein residue correlations.
 
