@@ -1,0 +1,105 @@
+\documentclass[10pt]{article}
+\usepackage{amssymb}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{setspace}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\title{Protein-Ligand Binding Residue Prediction using Deep CNN\\
+        \href{https://doi.org/10.1186/s12859-019-2672-1}
+                        {Research Paper}}
+        
+\author{
+                Yifeng Cui, Qiwen Dong, Daocheng Hong and Xikun Wang\\
+                \\
+                \\
+                \\
+                \textbf{Summary by}\\
+                Abdus Salam Khazi\\
+                Albert-Ludwigs-Universität Freiburg\\
+                \href{mailto:abdus.khazi@students.uni-freiburg.de}
+                       {abdus.khazi@students.uni-freiburg.de}
+}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+Proteins are the workhorses of a living organism.
+Ligands are molecules that act as signals to the proteins.  The combination of ligands and 
+ligand binding proteins accomplish very important biological tasks.
+Learning the protein-ligand interaction is key to understanding many biological functions 
+as well to pharmaceutical companies for drug manufacturing.
+
+In this paper, the authors are trying to build a model that predicts whether each amino acid in an input amino-acid sequence (primary structure of the protein) is a binding site or not. 
+Each amino acid in the protein is also called a residue in the paper.
+This function is learn-able because the primary structure of the protein determines
+the tertiary structure.
+Furthermore, the tertiary structure (3D Shape) determines the binding
+sites.
+For learning this model, the authors use deep neural networks as DeepNNs
+are universal function approximators.
+A 2 way cross entropy loss function is used because of the binary classification
+requirement.
+
+Previous attempts to solve this problem can be divided broadly into primary structure strategies, tertiary structure (3D) strategies. The primary structure strategies use the
+concept of sliding window to incorporate the influence of neighbouring residues in making
+a residue binding. 
+The tertiary structure based models use the protein's 3D shape data for model training.
+However, the primary structure based strategies cannot fully model the dependencies among
+the residues with limited window size because the spacial proximity of the residues is different in the protein's primary and tertiary structures.
+The best of tertiary structure strategies are based on the use of 3D template matching which is computationally very costly.
+
+As there are considerable similarities between Neural Machine Translation (NMT) and Binding Residue Prediction, the authors base their solution on NMT solutions.
+Recurrent Neural networks, though widely used for NMT, have disadvantages like being sequencial and unequal residue computations (values from the first residue are in the recurring loop longer than the last residue).
+Due to these issues,  the authors propose the usage of Temporal Convolution Networks
+as a solution.
+
+The T-CNN architecture proposed by the authors (named DeepCSeq) comprises of an encoder and a decoder part similar to the architecture of any sequence to sequence prediction model. 
+Each amino acid in the sequence is mapped to a high dimensional real valued vector 
+which holds information about the amino acid e.g. type, spacial location within the sequence etc...
+The feature map for the whole protein is passed through multiple 1 dimensional convolutions in 1 layer. 
+In addition to this, the layer has layer normalisation and gated linear unit
+processing to stabilize the gradients.
+The number of layers in the encoder is configurable. The outputs of each layer maintain
+a feature vector for each amino acid using padding.
+The decoder network consists of 2 fully connected convolution layers with 1 dimensional
+1 * 1 kernels. The final output of the prediction is a 2 dimensional vector for each
+amino acid. This is passed through a softmax layer and thereafter to binary cross entropy
+for loss calculation.
+
+As the probability that a residue is binding increases when its neighbouring residues are also
+binding, the authors propose a new enhanced decoder for taking this into account.
+The output of the standard decoder is added (after some processing) to the output of the 
+standard encoder and the resulting sum is given to the standard decoder again.
+The second output of the standard decoder becomes the final output of the enhanced
+architecture.
+
+The authors do hyper-parameter optimisation separately to get number of encoder layers as 10, kernel width as 5 among other values.
+Due to very steep and unpredictable gradients, the authors use a 3 stage stochastic 
+gradient descent. Each stage has a different learning rate and the rate decays exponentially within the stage.
+
+It is found that the proposed architecture is at least 15\% better in precision and better in Matthews Correlation Coefficient (MCC) by a value of $\approx$ 0.05 compared to the state of the art performance till date.
+In addition the enhanced decoder increases the MCC by an additional value of 0.02.
+However the recall was found to be lesser due to the negative skew in data. 
+Moreover,  some factors did not help in improving accuracy in the project like data-augmentation.
+Finally the authors discuss further research areas for this topic namely the usage of generative adversarial networks, inclusion of more 3D features in the input feature map and the usage of attention mechanisms to better model long distance protein residue correlations.
+
+\end{document}
+
+
+
+\ifx false
+Finally the sequence data of the proteins
+is 1000 times greater than the 3D structure data.
+\fi
