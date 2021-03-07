@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 \usepackage{hyperref}
+\usepackage[margin=0.75in]{geometry}
 
 \hypersetup{
     colorlinks=true,
@@ -19,7 +20,6 @@
                         {Research Paper}}
         
 \author{
-                Yifeng Cui, Qiwen Dong, Daocheng Hong and Xikun Wang\\
                 \\
                 \\
                 \\
@@ -29,6 +29,8 @@
                 \href{mailto:abdus.khazi@students.uni-freiburg.de}
                        {abdus.khazi@students.uni-freiburg.de}
 }
+
+\date{}
 
 \begin{document}
 
@@ -85,15 +87,24 @@ standard encoder and the resulting sum is given to the standard decoder again.
 The second output of the standard decoder becomes the final output of the enhanced
 architecture.
 
+The datasets used for the training of the model were collected from \href{https://zhanglab.ccmb.med.umich.edu/BioLiP/}{BioLip} database.
+This is a semi-manually curated database obtained from the \href{https://www.rcsb.org/}{Protein Data bank}.
+Proteins with binding residues of 14 ligands were selected.
+These protein sequences were then divided into train, validation and test sets.
+For data augmentation, pairwise sequence identity of 100\% was allowed within the training set and $<$ 40\% was allowed between training and test/validation sets.
+
 The authors do hyper-parameter optimisation separately for each hyper-parameter to get the number of layers in encoder as 10 and the kernel width as 5 among other values.
 Due to very steep and unpredictable gradients, the authors use a 3 stage stochastic 
 gradient descent. Each stage has a different learning rate and the rate decays exponentially within the stage.
 
-It is found that the proposed architecture is at least 15\% better in precision and better in Matthews Correlation Coefficient (MCC) by a value of $\approx$ 0.05 compared to the state of the art performance till date.
+As experiments, the effect of various soft-max thresholds, the comparison of the model and the state of the art methods and the effect of data augmentations were conducted.
+Due to the negative skew in the training data, the soft-max threshold of 0.4 was found to give
+a local optima.  Due to the same reason, the optimal value of recall $\approx$ 41.43 (at soft-max threshold of 0.4) was found to be lesser than the state of the art results.
+It was found that the proposed architecture was at least 15\% better in precision and better in Matthews Correlation Coefficient (MCC) by a value of $\approx$ 0.05 compared to the state of the art performance till date.
 In addition the enhanced decoder increases the MCC by an additional value of 0.02.
-However the recall was found to be lesser due to the negative skew in the training data. 
-Moreover,  some factors did not help in improving accuracy in the project like data-augmentation.
-Finally the authors discuss further research areas for this topic namely the usage of generative adversarial networks, inclusion of more 3D features in the input feature map and the usage of attention mechanisms to better model long distance protein residue correlations.
+Moreover,   data-augmentation did not help in any significant improvement of the model's accuracy.
+
+In the end, the authors discuss further research areas for this topic namely the usage of generative adversarial networks, inclusion of more 3D features in the input feature map and the usage of attention mechanisms to better model long distance protein residue correlations.
 
 \end{document}
 
