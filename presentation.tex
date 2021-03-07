@@ -9,7 +9,7 @@
 \author[Abdus Salam Khazi]
 {
                 \href{https://doi.org/10.1186/s12859-019-2672-1}
-                        {Research Paper}
+                        {Research Paper} \cite{ResearchPaper}
 }
 
 \institute{\textbf{BioInformatics Seminar}\\
@@ -275,7 +275,7 @@ $$
 Block_N(Block_{N-1}.... Block_2(Block_1(\mathbf{X})))); \mathbf{X} \in \mathbb{R}^{m \times 1 \times 2c}
 $$
 \pause
-The following diagram shows the basic architecture of a basic block \\
+The following diagram shows the basic architecture of a basic block \cite{ResearchPaper} \\
 
 \includegraphics[scale=0.5]{BasicBlock}
 
@@ -479,8 +479,7 @@ amino-acids.
 
 
 \begin{frame}[t]{Biological Background}
-Protein formation process.
-\href{https://www.youtube.com/watch?v=gG7uCskUOrA}{DNA to Protein}
+Protein formation process. \cite{DNAtoProtein}
 \pause
 \begin{itemize}
 \item All proteins required by an organism are encoded in the DNA.
@@ -561,19 +560,31 @@ $$
 
 \begin{frame}[t]{References}
 
-\begin{thebibliography}{5}
+\begin{thebibliography}{1}
+
+\bibitem{ResearchPaper}
+\alert{Yifeng Cui, Qiwen Dong, Daocheng Hong and Xikun Wang}
+\newblock {Predicting protein ligand binding residues with deep convolutional neural networks.}
+
 \bibitem{TedXTalk}
 \alert{The protein folding problem. 
 \href{https://www.youtube.com/watch?v=zm-3kovWpNQ}{TEDx Talk}}
 
 \bibitem{HemoglobinImage}
-\alert{
-\href{https://en.wikipedia.org/wiki/Hemoglobin}{Hemoglobin Wiki}}
+\alert{\href{https://en.wikipedia.org/wiki/Hemoglobin}{Hemoglobin Wiki}}
 
 \bibitem{MotorProteinImage}
 \alert{Qian Wang,Anatoly B Kolomeisky}
 \newblock{
 \href{https://www.x-mol.com/paper/5733541}{Theoretical Analysis of Run Length Distributions for Coupled Motor Proteins}}
+
+\bibitem{FCNNDrawingTool}
+\alert{NN SVG. 
+\href{http://alexlenail.me/NN-SVG/index.html}{FCNN Drawing Tool}
+}
+
+\bibitem{DNAtoProtein}
+\alert{\href{https://www.youtube.com/watch?v=gG7uCskUOrA}{Protein formation Process }}
 
 \end{thebibliography}
 
