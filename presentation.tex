@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usetheme{Warsaw}
+\setbeamertemplate{headline}{}
 \graphicspath{ {./images/} }
 \usepackage{amsmath}
 
@@ -7,12 +8,11 @@
 }
 \author[Abdus Salam Khazi]
 {
-                Yifeng Cui, Qiwen Dong, Daocheng Hong and Xikun Wang\\
                 \href{https://doi.org/10.1186/s12859-019-2672-1}
                         {Research Paper}
 }
 
-\institute{\textbf{Seminar}\\
+\institute{\textbf{BioInformatics Seminar}\\
                 Abdus Salam Khazi\\
                 Albert-Ludwigs-Universität Freiburg}
 \date{\today}
@@ -31,51 +31,29 @@
 \titlepage
 \end{frame}
 
+\begin{frame}{Table of Contents}
+\tableofcontents
+\end{frame}
+
+\section{Biological Background}
+
 \begin{frame}[t]{Biological Background}
 What are proteins? \pause
 \begin{itemize}
 \item They are complex molecules that are work-horses of a living organism.
 They are literally machines.
-\href{https://www.youtube.com/watch?v=zm-3kovWpNQ}{TEDx Talk}
-\pause
+\cite{TedXTalk}
 
 \item Proteins are essential for almost every function of a living organism's body.
 E.g: Movement of muscles, Transportation of oxygen, Digestion, Immune system etc...
-\pause
 
 \item Below are 2 proteins - Hemoglobin(Left) and Motor Proteins(Right).
-Notice their shapes are different.
+Notice their shapes are different. \cite{HemoglobinImage} \cite{MotorProteinImage}
 
-\includegraphics[scale=0.25]{Hemoglobin}
+\includegraphics[scale=0.25]{Hemoglobin} 
 \includegraphics[scale=0.25]{MotorProtein}
 \end{itemize}
 \end{frame}
-
-
-
-\begin{frame}[t]{Biological Background}
-Protein formation process.
-\href{https://www.youtube.com/watch?v=gG7uCskUOrA}{DNA to Protein}
-\pause
-\begin{itemize}
-\item All proteins required by an organism are encoded in the DNA.
-\pause
-\item First, RNA polymerase transcribes the part of our DNA which contains protein encoding to messenger RNA a.k.a mRNA.
-\pause
-\item  mRNA is post-processed to get an RNA. This RNA goes outside the nucleus of the cell. RNA $\in \{A, T, C, G\}^n$ where $n \in \mathbb{I}^+$
-\pause
-\item  Ribosomes in the cell cytoplasm then translate RNA to an amino acide sequence. This sequence is called primary structure of the protein. The mapping can be written as - $Ribosome:\mathbb \{A, T, C, G\}^n \to \{R, N,D, C ...\}^m$\\
-where $ m \approx \frac{n}{3}$ and $m \in \mathbb{I}^+$.  
-\pause
-\item This amino acid sequence folds into a 3D shape \\
-depending on its sequence. This structure is called the \\
-tertiary protein structure.
-\end{itemize}
-\end{frame}
-
-
-
-
 
 
 \begin{frame}[t]{Biological Background}
@@ -97,6 +75,7 @@ Why study protein Ligand Interaction?
 \end{itemize}
 \end{frame}
 
+\section{Problem Description}
 
 \begin{frame}[t]{What is our problem?}
 \begin{itemize}
@@ -116,7 +95,9 @@ SVM, Deep Neural networks, Bayes classifier, 3D Template matching (albeit with h
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{What is our problem? - Continued}
+\section{Proposed Solutions}
+
+\begin{frame}[t]{Previous solutions}
 \begin{itemize}
 \item Previous methods used sliding window concept to capture residue dependencies.
 \pause
@@ -131,44 +112,26 @@ SVM, Deep Neural networks, Bayes classifier, 3D Template matching (albeit with h
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{Binding-Residue Prediction vs NMT}
+\begin{frame}[t]{Proposed Solutions}
 \pause
 \begin{itemize}
-\item Neural Machine Translation (NMT) can be defined as a function
-$g:\mathbb {\alpha}^n \to {\beta}^m$ where $\alpha,\beta$ are alphabets of 2 distinct languages and $n,m \in \mathbb{I}^+$
+\item Neural Machine Translation (NMT).
+Binding-Site prediction can be formulated as a specific case of Neural machine Translation (NMT).
+Hence, any solution of NMT can be used for our problem.
+\item An amino acid sequence (being variable in length) can be formulated as a Recurrent nueral network (RNN) problem, we can use RNN solutions for our problem
+\item There are disadvantages e.g. Computational time (among others)
 \pause
-\item Binding-Site prediction is a specific case of NMT, where $m = n$, $\alpha$ is one of  20 amino acids and $\beta$ is $\{Binding, NonBinding\}$.
-\pause 
-\item The local and long distance coorelation between different ${\alpha}^n$ and ${\beta}^m$ exist in both NMT and BR prediction.
-\pause
-\item Hence, any solution of NMT can be used for our problem.
-\pause
-\item Fun fact - Ribosome is also "Translating" from DNA alphabet to Amino acid alphabet !!!
-\end{itemize}
-\end{frame}
-
-\begin{frame}[t]{RNNs as a solution}
-\pause
-\begin{itemize}
-\item As our amino acid sequence is variable in length, we could use RNNs to capture long term dependencies in the sequence.
-\pause
-\item There are some disadvantages
-\begin{itemize}
-\pause
-\item The first amino acid is processed $n$ times, where n is the length of the protein. And the last amino acid is processed only 1 time.
-\pause
-\item RNNs are sequential in principle. Parallelizing the computation is not possible.
-\end{itemize}
-\end{itemize}
-\pause
-Solution - Convolution Neural Networks.
+\item Solution - Convolution Neural Networks.
 \begin{itemize}
 \pause
 \item Temporal-CNNs can be parallelized, are 10x faster and give state of the art results.
 \pause
 \item In Temporal-CNN (DeepCSeqSite) architecture, both local and global dependencies can be captured by increasing the number of CNN layers. More on this in later slides!!
 \end{itemize}
+\end{itemize}
 \end{frame}
+
+\section{CNN As Solution}
 
 \begin{frame}[t]{CNNs as a solution}
 \begin{itemize}
@@ -234,8 +197,10 @@ protein.
 \end{itemize}
 \end{frame}
 
+\section{CNN Architecture and Design}
+
 \begin{frame}[t]{CNNs as a solution - Architecture}
-\textbf{Effective Context Scope / Input Field}
+\textbf{Effective Context Scope / Input Field} \cite{FCNNDrawingTool}
 
 \includegraphics[scale=0.35]{kernel}
 \includegraphics[scale=0.25]{EmptyNeuralNetwork}\\
@@ -266,9 +231,11 @@ $|Input Field(\mathbf{O}_0)| = 5 = 1 + 2(3 -1) = 1 + n(k-1)$
 \begin{itemize}
 \item Hence a single convolutional node in $n^{th}$ convolutional layer (depth) with kernel width $k$ and stride 1 has an input field $1+ n(k-1)$. 
 \pause
-\item The author propose an increase in $n$ i.e the depth of CNN instead of $k$ to prevent huge growth in optimization parameters.
+\item The authors propose an increase in $n$ i.e the depth of CNN instead of $k$ to prevent huge growth in optimization parameters.
 \end{itemize}
 \end{frame}
+
+\subsection{Basic Design}
 
 \begin{frame}[t]{Basic Design - Standard DeepCSeq-Site}
 Here we consider batch size $B = 1$ for simplicity.
@@ -278,7 +245,9 @@ Here $d = 30$ and $m$ is the length of the protein in the batch.
 \pause
 \item Let Kernel $\mathbf{K} \in \mathbb{R}^{k \times d}$ be the 1-D kernel in our convolutions.
 \pause
-\item $\mathbf{0}^{\frac{k}{2} \times d}$ is padded at both ends of \textbf{P} to maintain length $m$. This padding is also done at each step throughout the network for the same reason.
+\item We apply same convolutions using these kernels to maintain length $m$.
+\ifx false
+\item $\mathbf{0}^{\frac{k}{2} \times d}$ is padded at both ends of \textbf{P} to maintain length $m$. This padding is also done at each step throughout the network for the same reason.\fi
 \pause
 \item To capture local co-relation and covalent bonds between adjacent residues,
 the following convolution is applied
@@ -292,6 +261,8 @@ $$
 \item $\mathbb{R}^{m \times 1 \times 2c}$ is input to $N$ Basic blocks which form the\\ encoder of the network.
 \end{itemize}
 \end{frame}
+
+\subsection{Encoder Design}
 
 \begin{frame}[t]{Basic Block - DeepCSeq-Site}
 A basic block in the network is defined as
@@ -314,9 +285,11 @@ The following diagram shows the basic architecture of a basic block \\
 \begin{itemize}
 \item  First input $\mathbf{X} \in \mathbb{R}^{m \times 1 \times 2c}$ is layer normalized
 to get $\mathbf{X}_{norm}$
+\ifx false
 $$
 \mathbf{X}_i = \frac{\mathbf{X}_i - mean(\mathbf{X}_i)}{StdDeviation(\mathbf{X}_i)};  \forall \mathbf{X}_i \in  \mathbb{R}^{m \times 1}; i \in [1,2c], \mathbb{I}^+
 $$
+\fi
 \pause
 \item Next, $\mathbf{X}_{norm} = [\mathbf{A}: \mathbf{B}]$ where 
 $\mathbf{A},\mathbf{B} \in \mathbb{R}^{m \times 1 \times c}$ is passed through a Gated Linear Unit which performs the following operation to get $\mathbf{X}_{gated}$
@@ -346,6 +319,8 @@ $$
 \item Normalization prevents unexpected gradient due to the skip connection summation.
 \end{itemize}
 \end{frame}
+
+\subsection{Decoder Design}
 
 \begin{frame}[t]{Decoder - Standard DeepCSeq-Site}
 2 Fully connected (convolution) layers are defined for the decoder in the following way 
@@ -393,42 +368,45 @@ The probability of being a binding amino acid depends on wether its neighbours a
 \begin{itemize}
 \item Additional "Context prediction" is given as input to the enhanced decoder.
 \pause
-\item Using Left Context prediction
-\begin{itemize}
-\item Let $\mathbf{p}$ be the context/prediction of our protein.
-\pause
-\item $|\mathbf{p}| = m$ where $m$ is the length of the protein.
-\pause
-\item The last amino-acid is not at the left of any other amino-acid.
-So it is not necessary for calculation.
-\pause
-\item Hence $\mathbf{p}$ is transformed by pre-pending $0$s to form\\
- $\mathbf{p^\prime} = [0\:\:0 \cdots $k zeros$] : [p_1\:\: p_2\:\: \cdots p_{m-1}]$
-\pause
-\item Kernels of size $\mathbf{K} \in \mathbb{R}^{k \times 1}$ are applied to $\mathbf{p^\prime} $ to get $\mathbf{P}_{left} \in \mathbb{R}^{m \times 1 \times 2c}$
-$$
-\mathbf{P}_{left} = [\mathbf{K}_1(\mathbf{p^\prime})\:\: \mathbf{K}_2(\mathbf{p^\prime} )\:\: \cdots \mathbf{K}_{2c}(\mathbf{p^\prime})]^T
-$$
-\end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[t]{Decoder - Enhanced DeepCSeq-Site}
-\begin{itemize}
-\item Usage of Right Context prediction is just a mirror image of the Left.
-\pause
-\item $\mathbf{P}_{left}$, $\mathbf{P}_{right}$ and the encoder output are all
+\item Predictions $\mathbf{P}_{left}$, $\mathbf{P}_{right}$ and the encoder output are all
 added to form enhanced encoder's output.
 \pause
-\item During training, we can directly use labels as the input to context prediction usage process.
-\pause
-\item During testing/future-use, first the standard decoder is used for prediction.
-The output of the standard decoder is given as the input to the enhanced decoder (After pre-processing as discussed above).
+\item \textbf{Teacher forcing at a higher abstraction}.
+During training, we can directly use labels as the input to context prediction usage process.
+During testing/future-use, the output of the standard decoder is given as the input to the enhanced decoder.
 \pause
 \item Then the decoder used is exactly the same as the standard decoder.
 \end{itemize}
 \end{frame}
 
+\section{Optimisation}
+
+\begin{frame}[t]{Optimisation}
+There are 3 main hyperparameters to optimize - number of basic blocks $N$
+, kernel width $k$ and the number of channels $c$.
+\begin{itemize}
+\item Optimization of $k$,$n$ is performed independently.
+\item The authors fix $N = 10$ while optimising $k$ and $k = 3$ while optimising $N$.
+\item As per empirical evidence, $N=10$, $k=5$ and $c=256$ gives best results.
+\item Also $\gamma = 0.2$ and drop out ratio 0.5 is used during training.
+\item The optimization is done through stochastic gradient descent
+\item To prevent data skew, the mini-batch selection should be such that the proportion
+of binding to non-binding residues remains roughly the same to that of the whole training data.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Optimisation - Learning Rate}
+The learning rate consists of 3 stages. Each stage has exponential decay.
+\begin{itemize}
+\item $10^{-5}$ is used for first stage. This is to deal with very steep gradients. (Optimization step $< 19999$)
+\item $10^{-4}$ is used for second stage. This is to avoid falling into local minima that predicts all residues as negative.
+There is a huge skew towards negative (non-binding) residues in our data set.
+(Optimization step $\in [20000 \to 99999]$)
+\item $2 * 10^{-4}$ for the final stage till the end of the optimisation. (Optimization step $>99999$)
+\end{itemize}
+\end{frame}
+
+\section{Evaluation}
 
 \begin{frame}[t]{Evaluation}
 Let $TP$, $TN$, $FP$ and $FN$ be the number of True positive, True
@@ -450,30 +428,8 @@ $$
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{Optimisation}
-There are 3 main hyperparameters to optimize - number of basic blocks $N$
-, kernel width $k$ and the number of channels $c$.
-\begin{itemize}
-\item Optimization of $k$,$n$ is performed independently.
-\item The authors fix $N = 10$ while optimising $k$ and $k = 3$ while optimising $N$.
-\item As per empirical evidence, $N=10$, $k=5$ and $c=256$ gives best results.
-\item Also $\gamma = 0.2$ and drop out ratio 0.5 is used during training.
-\item The optimization is done through stochastic gradient descent
-\item To prevent data skew, the mini-batch selection should be such that the proportion
-of binding to non-binding residues remains roughly the same to that of the whole training data.
-\end{itemize}
-\end{frame}
 
-\begin{frame}[t]{Optimisation}
-The learning rate consists of 3 stages. Each stage has exponential decay.
-\begin{itemize}
-\item $10^{-5}$ is used for first stage. This is to deal with very steep gradients. (Optimization step $< 19999$)
-\item $10^{-4}$ is used for second stage. This is to avoid falling into local minima that predicts all residues as negative.
-There is a huge skew towards negative (non-binding) residues in our data set.
-(Optimization step $\in [20000 \to 99999]$)
-\item $2 * 10^{-4}$ for the final stage till the end of the optimisation. (Optimization step $>99999$)
-\end{itemize}
-\end{frame}
+\section{Results}
 
 \begin{frame}[t]{Results}
 \begin{itemize}
@@ -486,6 +442,8 @@ more stronger context prediction input to the decoder
 \item Data augmentation was not found to be suitable for the model due to high computational costs and low effect.
 \end{itemize}
 \end{frame}
+
+\section{Discussion and Future Work}
 
 \begin{frame}[t]{Discussion and conclusion}
 \begin{itemize}
@@ -508,6 +466,117 @@ amino-acids.
 \item Usage of Generative adverserial networks to tackle quantitative disparity between
 3D structure data and sequence data.
 \end{itemize}
+\end{frame}
+
+\section{Questions Please !!!}
+
+\begin{frame}[t]{Questions Please !!!}
+  \centering \Huge
+  \emph{Q \& A}
+\end{frame}
+
+\section{Further Details...}
+
+
+\begin{frame}[t]{Biological Background}
+Protein formation process.
+\href{https://www.youtube.com/watch?v=gG7uCskUOrA}{DNA to Protein}
+\pause
+\begin{itemize}
+\item All proteins required by an organism are encoded in the DNA.
+\pause
+\item First, RNA polymerase transcribes the part of our DNA which contains protein encoding to messenger RNA a.k.a mRNA.
+\pause
+\item  mRNA is post-processed to get an RNA. This RNA goes outside the nucleus of the cell. RNA $\in \{A, T, C, G\}^n$ where $n \in \mathbb{I}^+$
+\pause
+\item  Ribosomes in the cell cytoplasm then translate RNA to an amino acide sequence. This sequence is called primary structure of the protein. The mapping can be written as - $Ribosome:\mathbb \{A, T, C, G\}^n \to \{R, N,D, C ...\}^m$\\
+where $ m \approx \frac{n}{3}$ and $m \in \mathbb{I}^+$.  
+\pause
+\item This amino acid sequence folds into a 3D shape \\
+depending on its sequence. This structure is called the \\
+tertiary protein structure.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Binding-Residue Prediction vs NMT}
+\pause
+\begin{itemize}
+\item Neural Machine Translation (NMT) can be defined as a function
+$g:\mathbb {\alpha}^n \to {\beta}^m$ where $\alpha,\beta$ are alphabets of 2 distinct languages and $n,m \in \mathbb{I}^+$
+\pause
+\item Binding-Site prediction is a specific case of NMT, where $m = n$, $\alpha$ is one of  20 amino acids and $\beta$ is $\{Binding, NonBinding\}$.
+\pause 
+\item The local and long distance coorelation between different ${\alpha}^n$ and ${\beta}^m$ exist in both NMT and BR prediction.
+\pause
+\item Hence, any solution of NMT can be used for our problem.
+\pause
+\item Fun fact - Ribosome is also "Translating" from DNA alphabet to Amino acid alphabet !!!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{RNNs as a solution}
+\pause
+\begin{itemize}
+\item As our amino acid sequence is variable in length, we could use RNNs to capture long term dependencies in the sequence.
+\pause
+\item There are some disadvantages
+\begin{itemize}
+\pause
+\item The first amino acid is processed $n$ times, where n is the length of the protein. And the last amino acid is processed only 1 time.
+\pause
+\item RNNs are sequential in principle.
+Parallelizing the computation is not possible.
+\end{itemize}
+\end{itemize}
+\pause
+Solution - Convolution Neural Networks.
+\begin{itemize}
+\pause
+\item Temporal-CNNs can be parallelized, are 10x faster and give state of the art results.
+\pause
+\item In Temporal-CNN (DeepCSeqSite) architecture, both local and global dependencies can be captured by increasing the number of CNN layers. 
+\end{itemize}
+\end{frame}
+
+\begin{frame} [t]{Context Prediction}
+Using Left Context prediction
+\begin{itemize}
+\item Let $\mathbf{p}$ be the context/prediction of our protein.
+\pause
+\item $|\mathbf{p}| = m$ where $m$ is the length of the protein.
+\pause
+\item The last amino-acid is not at the left of any other amino-acid.
+So it is not necessary for calculation.
+\pause
+\item Hence $\mathbf{p}$ is transformed by pre-pending $0$s to form\\
+ $\mathbf{p^\prime} = [0\:\:0 \cdots $k zeros$] : [p_1\:\: p_2\:\: \cdots p_{m-1}]$
+\pause
+\item Kernels of size $\mathbf{K} \in \mathbb{R}^{k \times 1}$ are applied to $\mathbf{p^\prime} $ to get $\mathbf{P}_{left} \in \mathbb{R}^{m \times 1 \times 2c}$
+$$
+\mathbf{P}_{left} = [\mathbf{K}_1(\mathbf{p^\prime})\:\: \mathbf{K}_2(\mathbf{p^\prime} )\:\: \cdots \mathbf{K}_{2c}(\mathbf{p^\prime})]^T
+$$
+\item Usage of Right Context prediction is just a mirror image of the Left.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{References}
+
+\begin{thebibliography}{5}
+\bibitem{TedXTalk}
+\alert{The protein folding problem. 
+\href{https://www.youtube.com/watch?v=zm-3kovWpNQ}{TEDx Talk}}
+
+\bibitem{HemoglobinImage}
+\alert{
+\href{https://en.wikipedia.org/wiki/Hemoglobin}{Hemoglobin Wiki}}
+
+\bibitem{MotorProteinImage}
+\alert{Qian Wang,Anatoly B Kolomeisky}
+\newblock{
+\href{https://www.x-mol.com/paper/5733541}{Theoretical Analysis of Run Length Distributions for Coupled Motor Proteins}}
+
+\end{thebibliography}
+
 \end{frame}
 
 \end{document}
