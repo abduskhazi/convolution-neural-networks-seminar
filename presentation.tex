@@ -159,41 +159,14 @@ to make the lengths of proteins in a single batch equal.
 \pause
 \item $\mathbb{R}^{30}$ are manually engineered features given by
 \begin{itemize}
-\item \textbf{Position-Specific Score Matrix (PSSM)} $\in \mathbb{R}^{20}$. This is the probilility of mutation to other amino acids at each position.
-Since this  mutation is not position independent,  it is calculated for the whole protein i.e $\in \mathbb{R}^{m \times 20}$.  Normalized values are calculated by
-$$
-Norm(\mathbf{x}) = \frac{1}{1+2^{-\mathbf{x}}}; \mathbf{x}, \in \mathbb{R}^{m \times 20}
-$$
-\pause
+\item \textbf{Position-Specific Score Matrix (PSSM)} $\in \mathbb{R}^{20}$. 
 \item \textbf{Relative solvent accessibility} $\in \mathbb{R}$.
-Buried $(< 0.25)$ or exposed $(> 0.25)$ in the tertiary-structure.
-\pause
-\item \textbf{Secondary Structure} i.e $[\alpha$-helix $\beta$-strand coil$]^T$ $\in \mathbb{R}^3$.\\
-$\alpha$-helix,$\beta$-strand, coil $\in [0,1]$ indicating probabilities of \\
-existence.
-\pause
-\item \textbf{Dihedral angle} - $ \mathbf{A} \in \mathbb{R}^2$ where $Norm(\mathbf{A}) = \frac{\mathbf{A}}{360}$.
+\item \textbf{Secondary Structure} i.e $[\alpha$-helix $\beta$-strand coil$]^T$ $\in \mathbb{R}^3$.
+\item \textbf{Dihedral angle} - $ \mathbf{A} \in \mathbb{R}^2$.
+\item \textbf{Conservation rating score} during evolution.  $\in \mathbb{R}^2$. 
+\item \textbf{Residue type} $\in \mathbb{R}$.
+\item \textbf{Position embeddings} $\in \mathbb{R}$.
 \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}[t]{CNNs as a solution}
-\begin{itemize}
-\item \textbf{Conservation rating score} during evolution. 
-$[$Relative-entropy Jensen-Shannon-divergence$]^T \in \mathbb{R}^2$. 
-\pause
-\item \textbf{Residue type} $\in \mathbb{R}$ given by
-$$
-r = \frac{type}{21}; type \in [0,20]; type \in \mathbb{I}^+
-$$
-Here $0$ means dummy residue, $[1-20]$ represents other residues.
-\pause
-\item \textbf{Position embeddings} $\in \mathbb{R}$ given by 
-$$
-PE_i = \frac{i}{L}
-$$
-for residue at $i^{th}$ position where $L$ is the length of the\\
-protein.
 \end{itemize}
 \end{frame}
 
@@ -534,6 +507,48 @@ Solution - Convolution Neural Networks.
 \item Temporal-CNNs can be parallelized, are 10x faster and give state of the art results.
 \pause
 \item In Temporal-CNN (DeepCSeqSite) architecture, both local and global dependencies can be captured by increasing the number of CNN layers. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Input Feature Map Calculation}
+\begin{itemize}
+\item $\mathbb{R}^{30}$ are manually engineered features given by
+\begin{itemize}
+\item \textbf{Position-Specific Score Matrix (PSSM)} $\in \mathbb{R}^{20}$. This is the probilility of mutation to other amino acids at each position.
+Since this  mutation is not position independent,  it is calculated for the whole protein i.e $\in \mathbb{R}^{m \times 20}$.  Normalized values are calculated by
+$$
+Norm(\mathbf{x}) = \frac{1}{1+2^{-\mathbf{x}}}; \mathbf{x}, \in \mathbb{R}^{m \times 20}
+$$
+\pause
+\item \textbf{Relative solvent accessibility} $\in \mathbb{R}$.
+Buried $(< 0.25)$ or exposed $(> 0.25)$ in the tertiary-structure.
+\pause
+\item \textbf{Secondary Structure} i.e $[\alpha$-helix $\beta$-strand coil$]^T$ $\in \mathbb{R}^3$.\\
+$\alpha$-helix,$\beta$-strand, coil $\in [0,1]$ indicating probabilities of \\
+existence.
+\pause
+\item \textbf{Dihedral angle} - $ \mathbf{A} \in \mathbb{R}^2$ where $Norm(\mathbf{A}) = \frac{\mathbf{A}}{360}$.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Input Feature Map Calculation}
+\begin{itemize}
+\item \textbf{Conservation rating score} during evolution. 
+$[$Relative-entropy Jensen-Shannon-divergence$]^T \in \mathbb{R}^2$. 
+\pause
+\item \textbf{Residue type} $\in \mathbb{R}$ given by
+$$
+r = \frac{type}{21}; type \in [0,20]; type \in \mathbb{I}^+
+$$
+Here $0$ means dummy residue, $[1-20]$ represents other residues.
+\pause
+\item \textbf{Position embeddings} $\in \mathbb{R}$ given by 
+$$
+PE_i = \frac{i}{L}
+$$
+for residue at $i^{th}$ position where $L$ is the length of the\\
+protein.
 \end{itemize}
 \end{frame}
 
