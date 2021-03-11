@@ -84,8 +84,6 @@ $f:\mathbb \alpha^m \to \{Binding, NonBinding\}^m$
 where $m$ is the length of any ligand binding protein and $\alpha \in $
 \{Set of amino acids possible in a protein\}.
 
-\item They use Deep Convolutional Neural Networks for this purpose.
-
 \item This function is learnable because the binding sites are directly influenced by the tertiary protein structure which in turn depends on its primary structure.
 
 \item Notice that $m$ is variable here!!!
@@ -103,40 +101,16 @@ SVM, Deep Neural networks, Bayes classifier, 3D Template matching (albeit with h
 \item Neural Machine Translation (NMT).
 Binding-Site prediction can be formulated as a specific case of Neural machine Translation (NMT).
 Hence, any solution of NMT can be used for our problem.
-\item An amino acid sequence (being variable in length) can be formulated as a Recurrent neural network (RNN) problem, we can use RNN solutions for our problem
+\item Our problem can also be formulated as a Recurrent neural network (RNN) problem as length of the proteins is variable.
 \item There are disadvantages e.g. Computational time (among others)
 
-\item Solution - Convolution Neural Networks.
-\begin{itemize}
+\item Solution - Temporal Convolution Neural Networks.
+They can be parallelized, are 10x faster and give state of the art results.
 
-\item Temporal-CNNs can be parallelized, are 10x faster and give state of the art results.
-
-\item In Temporal-CNN (DeepCSeqSite) architecture, both local and global dependencies can be captured by increasing the number of CNN layers. More on this in later slides!!
-\end{itemize}
 \end{itemize}
 \end{frame}
 
 \section{CNN As Solution}
-
-\begin{frame}[t]{CNN as a solution}
-\begin{itemize}
-\item Let $\alpha \in $ \{Ala, Arg, Asn ...\}. i.e Set of amino acids.
-
-\item A protein of length $m$ is represented as ${\alpha}^m$
-
-\item A classifier that classifies ${\alpha}^m$ to $\{Binding, NonBinding\}^m$ is trained.
-
-\item During training, a mini-batch of $B$ proteins is taken together.  Each protein $\alpha^m$ in the batch is padded with $p_i$ dummy residues given by
-$$
-p_i =  \max(\{m_1, m_2 \cdots m_B\})- m_i
-$$
-to make the lengths of proteins in a single batch equal.
-
-\item The padding is removed before loss calculation.
-
-\item The lengths of the batches can differ from each other.
-\end{itemize}
-\end{frame}
 
 \begin{frame}[t]{CNN as a solution}
 \begin{itemize}
@@ -323,7 +297,7 @@ During testing/future-use, the output of the standard decoder is given as the in
 \section{Optimisation}
 
 \begin{frame}[t]{Optimisation - Hyper parameters}
-There are 3 main hyper parameters were optimized - number of basic blocks $N$
+3 main hyper parameters were optimized - number of basic blocks $N$
 , kernel width $k$ and the number of channels $c$ using "Student Gradient Decent".
 \begin{itemize}
 \item As per empirical evidence, $N=10$, $k=5$, $c=256$, $\gamma = 0.2$ and drop out ratio 0.5 gave best results.
@@ -392,9 +366,6 @@ low generalization and representational capacity.
 \item Deep CNN are better models. They  self learn hierarchical features and learn more abstract features at greater depths. Due to availability of massive sequencing data, 
 generalization of the deep networks is possible.
 \item They have advantage of capturing long distance relationships at higher depths without depending on a particular input field window.
-\item Non binding data skew ($\approx 96\%$)is better handled in DCS-SI as compared to SVM and other base-line models.\\
-For example - generalization and convergence of \\
-support vectors learned by SVM is difficult.
 \end{itemize}
 \end{frame}
 
