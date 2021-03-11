@@ -97,28 +97,13 @@ SVM, Deep Neural networks, Bayes classifier, 3D Template matching (albeit with h
 
 \section{Proposed Solutions}
 
-\begin{frame}[t]{Previous solutions}
-\begin{itemize}
-\item Previous methods used sliding window concept to capture residue dependencies.
-\pause
-\item But, nearby residues in the tertiary structure may be located far away in its primary structures.
-\item Just increasing window size is infeasible due to memory and computation costs.
-\pause
-\item The authors create a CNN architecture (named DeepCSeqSite) and use it as a universal function approximator.
-\pause
-\item The authors do not solve ligand specific prediction tasks.
-\pause
-\item They classify each amino-acid in the sequence as binding or non-binding.
-\end{itemize}
-\end{frame}
-
 \begin{frame}[t]{Proposed Solutions}
 \pause
 \begin{itemize}
 \item Neural Machine Translation (NMT).
 Binding-Site prediction can be formulated as a specific case of Neural machine Translation (NMT).
 Hence, any solution of NMT can be used for our problem.
-\item An amino acid sequence (being variable in length) can be formulated as a Recurrent nueral network (RNN) problem, we can use RNN solutions for our problem
+\item An amino acid sequence (being variable in length) can be formulated as a Recurrent neural network (RNN) problem, we can use RNN solutions for our problem
 \item There are disadvantages e.g. Computational time (among others)
 \pause
 \item Solution - Convolution Neural Networks.
@@ -254,31 +239,6 @@ The following diagram shows the basic architecture of a basic block \cite{Resear
 
 \end{frame}
 
-\begin{frame}[t]{Basic Block - DeepCSeq-Site}
-\begin{itemize}
-\item  First input $\mathbf{X} \in \mathbb{R}^{m \times 1 \times 2c}$ is layer normalized
-to get $\mathbf{X}_{norm}$
-\ifx false
-$$
-\mathbf{X}_i = \frac{\mathbf{X}_i - mean(\mathbf{X}_i)}{StdDeviation(\mathbf{X}_i)};  \forall \mathbf{X}_i \in  \mathbb{R}^{m \times 1}; i \in [1,2c], \mathbb{I}^+
-$$
-\fi
-\pause
-\item Next, $\mathbf{X}_{norm} = [\mathbf{A}: \mathbf{B}]$ where 
-$\mathbf{A},\mathbf{B} \in \mathbb{R}^{m \times 1 \times c}$ is passed through a Gated Linear Unit which performs the following operation to get $\mathbf{X}_{gated}$
-$$
-GLU: \mathbb{R}^{m \times 1 \times 2c} \to \mathbb{R}^{m \times 1 \times c}
-$$
-$$
-\mathbf{X}_{gated} = GLU([\mathbf{A}: \mathbf{B}]) = \mathbf{A} \odot sigmoid(\mathbf{B})
-$$
-\pause
-\item $\mathbf{K} \in \mathbb{R}^{k \times 1 \times c}$ 1-D kernels are applied to $\mathbf{X}_{gated}$ to get\\ $\mathbf{X}_{output} \in \mathbb{R}^{m \times 1 \times 2c}$\\
-$
-\mathbf{X}_{output}  = [\mathbf{K}_1(\mathbf{X}_{gated}) \cdots \mathbf{K}_{2c}(\mathbf{X}_{gated})]^T
-$
-\end{itemize}
-\end{frame}
 
 \begin{frame}[t]{Basic Block - DeepCSeq-Site}
 Solutions for gradient issues
@@ -448,7 +408,7 @@ amino-acids.
   \emph{Q \& A}
 \end{frame}
 
-\section{Further Details...}
+\section{Further Information/Details for Q and A...}
 
 
 \begin{frame}[t]{Biological Background}
@@ -483,6 +443,21 @@ $g:\mathbb {\alpha}^n \to {\beta}^m$ where $\alpha,\beta$ are alphabets of 2 dis
 \item Hence, any solution of NMT can be used for our problem.
 \pause
 \item Fun fact - Ribosome is also "Translating" from DNA alphabet to Amino acid alphabet !!!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Previous solutions}
+\begin{itemize}
+\item Previous methods used sliding window concept to capture residue dependencies.
+\pause
+\item But, nearby residues in the tertiary structure may be located far away in its primary structures.
+\item Just increasing window size is infeasible due to memory and computation costs.
+\pause
+\item The authors create a CNN architecture (named DeepCSeqSite) and use it as a universal function approximator.
+\pause
+\item The authors do not solve ligand specific prediction tasks.
+\pause
+\item They classify each amino-acid in the sequence as binding or non-binding.
 \end{itemize}
 \end{frame}
 
@@ -549,6 +524,32 @@ PE_i = \frac{i}{L}
 $$
 for residue at $i^{th}$ position where $L$ is the length of the\\
 protein.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Basic Block - DeepCSeq-Site}
+\begin{itemize}
+\item  First input $\mathbf{X} \in \mathbb{R}^{m \times 1 \times 2c}$ is layer normalized
+to get $\mathbf{X}_{norm}$
+\ifx false
+$$
+\mathbf{X}_i = \frac{\mathbf{X}_i - mean(\mathbf{X}_i)}{StdDeviation(\mathbf{X}_i)};  \forall \mathbf{X}_i \in  \mathbb{R}^{m \times 1}; i \in [1,2c], \mathbb{I}^+
+$$
+\fi
+\pause
+\item Next, $\mathbf{X}_{norm} = [\mathbf{A}: \mathbf{B}]$ where 
+$\mathbf{A},\mathbf{B} \in \mathbb{R}^{m \times 1 \times c}$ is passed through a Gated Linear Unit which performs the following operation to get $\mathbf{X}_{gated}$
+$$
+GLU: \mathbb{R}^{m \times 1 \times 2c} \to \mathbb{R}^{m \times 1 \times c}
+$$
+$$
+\mathbf{X}_{gated} = GLU([\mathbf{A}: \mathbf{B}]) = \mathbf{A} \odot sigmoid(\mathbf{B})
+$$
+\pause
+\item $\mathbf{K} \in \mathbb{R}^{k \times 1 \times c}$ 1-D kernels are applied to $\mathbf{X}_{gated}$ to get\\ $\mathbf{X}_{output} \in \mathbb{R}^{m \times 1 \times 2c}$\\
+$
+\mathbf{X}_{output}  = [\mathbf{K}_1(\mathbf{X}_{gated}) \cdots \mathbf{K}_{2c}(\mathbf{X}_{gated})]^T
+$
 \end{itemize}
 \end{frame}
 
