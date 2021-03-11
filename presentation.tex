@@ -118,7 +118,7 @@ Hence, any solution of NMT can be used for our problem.
 
 \section{CNN As Solution}
 
-\begin{frame}[t]{CNNs as a solution}
+\begin{frame}[t]{CNN as a solution}
 \begin{itemize}
 \item Let $\alpha \in $ \{Ala, Arg, Asn ...\}. i.e Set of amino acids.
 
@@ -138,20 +138,12 @@ to make the lengths of proteins in a single batch equal.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]{CNNs as a solution}
+\begin{frame}[t]{CNN as a solution}
 \begin{itemize}
 \item Each amino-acid in a protein is mapped to $\mathbb{R}^{30}$. Thus a protein is mapped to a feature space $\mathbb{R}^{m \times 30}$
 
-\item $\mathbb{R}^{30}$ are manually engineered features given by
-\begin{itemize}
-\item \textbf{Position-Specific Score Matrix (PSSM)} $\in \mathbb{R}^{20}$. 
-\item \textbf{Relative solvent accessibility} $\in \mathbb{R}$.
-\item \textbf{Secondary Structure} i.e $[\alpha$-helix $\beta$-strand coil$]^T$ $\in \mathbb{R}^3$.
-\item \textbf{Dihedral angle} - $ \mathbf{A} \in \mathbb{R}^2$.
-\item \textbf{Conservation rating score} during evolution.  $\in \mathbb{R}^2$. 
-\item \textbf{Residue type} $\in \mathbb{R}$.
-\item \textbf{Position embeddings} $\in \mathbb{R}$.
-\end{itemize}
+\item $\mathbb{R}^{30}$ are manually engineered features given by Position-Specific Score Matrix (PSSM),  Relative solvent accessibility etc... \cite{ResearchPaper}
+\includegraphics[scale=0.4]{FeatureMap}
 \end{itemize}
 \end{frame}
 
@@ -194,6 +186,13 @@ $|Input Field(\mathbf{O}_0)| = 5 = 1 + 2(3 -1) = 1 + n(k-1)$
 \end{frame}
 
 \subsection{Basic Design}
+
+\begin{frame}[t]{Basic Design - Standard DeepCSeq-Site}
+The following diagram shows the design of the model proposed in the paper. \cite{ResearchPaper} \\
+
+\includegraphics[scale=0.4]{StandardDesign}
+
+\end{frame}
 
 \begin{frame}[t]{Basic Design - Standard DeepCSeq-Site}
 Here we consider batch size $B = 1$ for simplicity.
@@ -295,6 +294,15 @@ $$
 After training is complete the classification threshold of softmax is set to a value $< 0.5$ because of non binding skew in data.
 \end{frame}
 
+\begin{frame}[t]{Enhanced DeepCSeq-Site}
+Here we can see the enhanced model proposed in the paper.
+Notice that there is no difference in the encoder.
+\cite{ResearchPaper} \\
+
+\includegraphics[scale=0.4]{EnhancedModel}
+
+\end{frame}
+
 \begin{frame}[t]{Decoder - Enhanced DeepCSeq-Site}
 The probability of being a binding amino acid depends on wether its neighbours are binding or not. So to facilitiate this,  the following enhanced decoder is proposed by the authors
 
@@ -314,28 +322,23 @@ During testing/future-use, the output of the standard decoder is given as the in
 
 \section{Optimisation}
 
-\begin{frame}[t]{Optimisation}
-There are 3 main hyperparameters to optimize - number of basic blocks $N$
-, kernel width $k$ and the number of channels $c$.
+\begin{frame}[t]{Optimisation - Hyper parameters}
+There are 3 main hyper parameters were optimized - number of basic blocks $N$
+, kernel width $k$ and the number of channels $c$ using "Student Gradient Decent".
 \begin{itemize}
-\item Optimization of $k$,$n$ is performed independently.
-\item The authors fix $N = 10$ while optimising $k$ and $k = 3$ while optimising $N$.
-\item As per empirical evidence, $N=10$, $k=5$ and $c=256$ gives best results.
-\item Also $\gamma = 0.2$ and drop out ratio 0.5 is used during training.
+\item As per empirical evidence, $N=10$, $k=5$, $c=256$, $\gamma = 0.2$ and drop out ratio 0.5 gave best results.
+\end{itemize}
+\includegraphics[scale=0.5]{optimization_N} \cite{ResearchPaper}
+\includegraphics[scale=0.5]{optimization_k} \cite{ResearchPaper}
+\end{frame}
+
+\begin{frame}[t]{Optimisation - Parameters}
+
+\begin{itemize}
+\item The learning rate consists of 3 stages. Each stage has exponential decay.
 \item The optimization is done through stochastic gradient descent
 \item To prevent data skew, the mini-batch selection should be such that the proportion
 of binding to non-binding residues remains roughly the same to that of the whole training data.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[t]{Optimisation - Learning Rate}
-The learning rate consists of 3 stages. Each stage has exponential decay.
-\begin{itemize}
-\item $10^{-5}$ is used for first stage. This is to deal with very steep gradients. (Optimization step $< 19999$)
-\item $10^{-4}$ is used for second stage. This is to avoid falling into local minima that predicts all residues as negative.
-There is a huge skew towards negative (non-binding) residues in our data set.
-(Optimization step $\in [20000 \to 99999]$)
-\item $2 * 10^{-4}$ for the final stage till the end of the optimisation. (Optimization step $>99999$)
 \end{itemize}
 \end{frame}
 
@@ -370,10 +373,14 @@ $$
 with best results - TM-SI, COF and COA
 \item Standard DeepCSeq-Site is better than these by 0.05 in MCC score and 15\% in precision
 \item There is bad Recall score because of non-binding bias in the data sets.
-\item Enhanced DCSI improves MCC by $\approx 0.02$.  This is because of inclusion of 
-more stronger context prediction input to the decoder
-\item Data augmentation was not found to be suitable for the model due to high computational costs and low effect.
+The following tables summarize the results. 
+\cite{ResearchPaper}
 \end{itemize}
+\begin{figure}[]
+ \centering
+\includegraphics[scale=0.33]{ResultComparison}
+\includegraphics[scale=0.33]{EnhancedResults}
+\end{figure}
 \end{frame}
 
 \section{Discussion and Future Work}
