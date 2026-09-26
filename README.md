@@ -1,29 +1,32 @@
-# README #
+# Convolutional Neural Networks Seminar
 
-This README would normally document whatever steps are necessary to get your application up and running.
+A study and presentation of **DeepCSeqSite**, a deep convolutional neural network for predicting **protein–ligand binding residues directly from protein sequences**.
 
-### What is this repository for? ###
+The seminar focuses on the motivation for using temporal convolutions, the DeepCSeqSite encoder/decoder architecture, effective context scope, optimization, evaluation, and the enhanced decoder.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Material
 
-### How do I get set up? ###
+* [Presentation](presentation.pdf)
+* [Written Summary](Summary.pdf)
+* [Outline](outline.txt)
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Primary Source
 
-### Contribution guidelines ###
+**Cui, Y., Dong, Q., Hong, D. & Wang, X.**
+*Predicting protein-ligand binding residues with deep convolutional neural networks*
+BMC Bioinformatics, 20, 93 (2019).
 
-* Writing tests
-* Code review
-* Other guidelines
+* [Research Paper — DOI](https://doi.org/10.1186/s12859-019-2672-1)
+* [Full Text — PubMed Central](https://pmc.ncbi.nlm.nih.gov/articles/PMC6390579/)
+* [Original DeepCSeqSite implementation and datasets](https://github.com/yfCuiFaith/DeepCSeqSite)
 
-### Who do I talk to? ###
+## Data
 
-* Repo owner or admin
-* Other community or team contact
+The paper's datasets are derived from **BioLiP**, a curated database of biologically relevant protein–ligand interactions, with protein structure information originating primarily from the Protein Data Bank.
+
+* [BioLiP](https://zhanggroup.org/BioLiP/)
+* [Protein Data Bank (PDB)](https://www.rcsb.org/)
+
+## Core Idea
+
+Given a protein's amino-acid sequence, predict **for every residue whether it participates in ligand binding**, using stacked 1D convolutions to build a large effective context while retaining parallel sequence processing.
